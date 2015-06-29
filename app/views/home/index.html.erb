@@ -5,6 +5,7 @@ var todo = {};
 todo.Todo = function(data) {
   this.description = m.prop(data.description);
   this.done = m.prop(false);
+  this.user_id = m.prop(1);
 };
 
 todo.TodoList = Array;
@@ -12,14 +13,28 @@ todo.TodoList = Array;
 //view-model
 todo.vm = {
 init: function() {
-        vm = todo.vm
-        vm.list = new todo.TodoList();
+        var vm = todo.vm;
+        var mytodos = m.prop([]);
+        // m.request({method: "GET", url: "/todos"}).then(function(data){
+        //     vm.list = data.map(function(datum){
+        //       return new todo.Todo(datum);
+        //       })
+        //     });
+        vm.list = m.request({method: "GET", url: "/todos", type: todo.Todo })
+        // vm.list = m.request({method: "GET", url: "/todos", type: todo.Todo }).then(function() {
+        //     debugger
+        //     })
+        // vm.list = new todo.TodoList(mytodos);
+        // vm.mytodos = m.request({method: "GET", url: "/todos"})
+        // vm.list = new todo.TodoList();
 
         vm.description = m.prop('');
         vm.add = function() {
           if(vm.description()) {
-            vm.list.push(new todo.Todo({ description: vm.description() }));
+            var myTodo = new todo.Todo({description: vm.description()})
+              vm.list().push(myTodo);
             vm.description("");
+            m.request({method: "POST", url: "/todos", data: myTodo})
           }
         };
       }
@@ -35,7 +50,7 @@ todo.view = function () {
         m("input", {onchange: m.withAttr("value", todo.vm.description), value: todo.vm.description()}),
         m("button", {onclick: todo.vm.add}, "Add"),
         m("table", [
-          todo.vm.list.map(function(task, index) {
+          todo.vm.list().map(function(task, index) {
             return m("tr", [
               m("td", [
                 m("input[type=checkbox]", {onclick: m.withAttr("checked", task.done), checked: task.done()})
