@@ -1,68 +1,11 @@
-Hello, world!
-<script>
-var todo = {};
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+    <title>Mithril App</title>
+  </head>
+  <body>
+  hi
 
-todo.Todo = function(data) {
-  this.description = m.prop(data.description);
-  this.done = m.prop(false);
-  this.user_id = m.prop(1);
-};
-
-todo.TodoList = Array;
-
-//view-model
-todo.vm = {
-init: function() {
-        var vm = todo.vm;
-        var mytodos = m.prop([]);
-        // m.request({method: "GET", url: "/todos"}).then(function(data){
-        //     vm.list = data.map(function(datum){
-        //       return new todo.Todo(datum);
-        //       })
-        //     });
-        vm.list = m.request({method: "GET", url: "/todos", type: todo.Todo })
-        // vm.list = m.request({method: "GET", url: "/todos", type: todo.Todo }).then(function() {
-        //     debugger
-        //     })
-        // vm.list = new todo.TodoList(mytodos);
-        // vm.mytodos = m.request({method: "GET", url: "/todos"})
-        // vm.list = new todo.TodoList();
-
-        vm.description = m.prop('');
-        vm.add = function() {
-          if(vm.description()) {
-            var myTodo = new todo.Todo({description: vm.description()})
-              vm.list().push(myTodo);
-            vm.description("");
-            m.request({method: "POST", url: "/todos", data: myTodo})
-          }
-        };
-      }
-}
-
-todo.controller = function () {
-  todo.vm.init();
-}
-
-todo.view = function () {
-  return m("html", [
-      m("body", [
-        m("input", {onchange: m.withAttr("value", todo.vm.description), value: todo.vm.description()}),
-        m("button", {onclick: todo.vm.add}, "Add"),
-        m("table", [
-          todo.vm.list().map(function(task, index) {
-            return m("tr", [
-              m("td", [
-                m("input[type=checkbox]", {onclick: m.withAttr("checked", task.done), checked: task.done()})
-                ]),
-              m("td", { style: {textDecoration: task.done() ? "line-through" : "none"} }, task.description()),
-              ])
-            })
-          ])
-        ])
-      ]);
-};
-
-m.mount(document, { controller: todo.controller, view: todo.view })
-
-</script>
+  </body>
+</html>

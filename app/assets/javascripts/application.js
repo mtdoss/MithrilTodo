@@ -13,5 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require mithril.min.js
+//= require mithril.min
+//= require todo
+//= require_tree ./controllers
+//= require_tree ./models
+//= require_tree ./views
 //= require_tree .
